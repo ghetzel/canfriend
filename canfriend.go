@@ -14,7 +14,7 @@ import (
 
 var log = logging.MustGetLogger(`canfriend`)
 var DefaultFrameEmitTimeout = 100 * time.Millisecond
-var DefaultFrameSummaryLimit = 1024
+var DefaultFrameSummaryLimit = 20
 
 type SortKey string
 
