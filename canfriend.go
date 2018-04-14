@@ -167,7 +167,7 @@ func (self *Analyzer) getScoreFor(orderBy SortKey, summary *FrameSummary) int {
 	case SortByLength:
 		return int(summary.LatestFrame.Length)
 	case SortByLastSeen:
-		return int(summary.LastSeen.UnixNano()) / int(time.Millisecond)
+		return int(summary.LastSeen.Unix())
 	}
 
 	return -1
