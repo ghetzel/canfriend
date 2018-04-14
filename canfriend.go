@@ -9,7 +9,7 @@ import (
 
 	"github.com/brutella/can"
 	"github.com/op/go-logging"
-	"github.com/wangjia184/sortedset"
+	"github.com/ghetzel/sortedset"
 )
 
 var log = logging.MustGetLogger(`canfriend`)
