@@ -5,7 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ghetzel/canfriend"
 	"github.com/ghetzel/cli"
 	"github.com/op/go-logging"
 )
@@ -76,7 +75,7 @@ func main() {
 				cli.IntFlag{
 					Name:  `frame-summary-limit, l`,
 					Usage: `The maximum number of frame summary items to keep in memory.`,
-					Value: canfriend.DefaultFrameSummaryLimit,
+					Value: DefaultFrameSummaryLimit,
 				},
 				cli.DurationFlag{
 					Name:  `refresh-interval, i`,
@@ -85,7 +84,7 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) {
-				analyzer := canfriend.NewAnalyzer(c.Args().First())
+				analyzer := NewAnalyzer(c.Args().First())
 				analyzer.FrameSummaryLimit = c.Int(`frame-summary-limit`)
 
 				ui := NewAnalyzerUI(analyzer)

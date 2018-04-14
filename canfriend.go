@@ -1,4 +1,4 @@
-package canfriend
+package main
 
 import (
 	"fmt"
@@ -8,11 +8,9 @@ import (
 	"time"
 
 	"github.com/brutella/can"
-	"github.com/op/go-logging"
 	"github.com/ghetzel/sortedset"
 )
 
-var log = logging.MustGetLogger(`canfriend`)
 var DefaultFrameEmitTimeout = 100 * time.Millisecond
 var DefaultFrameSummaryLimit = 20
 
@@ -169,7 +167,7 @@ func (self *Analyzer) getScoreFor(orderBy SortKey, summary *FrameSummary) int {
 	case SortByLength:
 		return int(summary.LatestFrame.Length)
 	case SortByLastSeen:
-		return int(summary.LastSeen.UnixNano())
+		return int(summary.LastSeen.UnixNano()) / int(time.Millisecond)
 	}
 
 	return -1

@@ -1,4 +1,4 @@
-package canfriend
+package main
 
 import (
 	"bytes"

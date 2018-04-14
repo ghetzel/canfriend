@@ -8,7 +8,6 @@ import (
 	tabwriter "github.com/NonerKao/color-aware-tabwriter"
 
 	"github.com/fatih/color"
-	"github.com/ghetzel/canfriend"
 	"github.com/jroimartin/gocui"
 )
 
@@ -16,18 +15,18 @@ var DefaultSummaryRefreshInterval = 100 * time.Millisecond
 
 type AnalyzerUI struct {
 	SummaryRefreshInterval time.Duration
-	analyzer               *canfriend.Analyzer
+	analyzer               *Analyzer
 	gui                    *gocui.Gui
-	summarySortBy          canfriend.SortKey
+	summarySortBy          SortKey
 	sortReverse            bool
 	pauseUpdates           bool
 }
 
-func NewAnalyzerUI(analyzer *canfriend.Analyzer) *AnalyzerUI {
+func NewAnalyzerUI(analyzer *Analyzer) *AnalyzerUI {
 	return &AnalyzerUI{
 		SummaryRefreshInterval: DefaultSummaryRefreshInterval,
 		analyzer:               analyzer,
-		summarySortBy:          canfriend.SortByLastSeen,
+		summarySortBy:          SortByLastSeen,
 		sortReverse:            true,
 	}
 }
@@ -70,14 +69,14 @@ func (self *AnalyzerUI) setupKeybindings() error {
 
 	if err := self.gui.SetKeybinding(``, 's', gocui.ModNone, func(_ *gocui.Gui, _ *gocui.View) error {
 		switch self.summarySortBy {
-		case canfriend.SortByID:
-			self.summarySortBy = canfriend.SortByCount
-		case canfriend.SortByCount:
-			self.summarySortBy = canfriend.SortByLastSeen
-		case canfriend.SortByLastSeen:
-			self.summarySortBy = canfriend.SortByLength
-		case canfriend.SortByLength:
-			self.summarySortBy = canfriend.SortByID
+		case SortByID:
+			self.summarySortBy = SortByCount
+		case SortByCount:
+			self.summarySortBy = SortByLastSeen
+		case SortByLastSeen:
+			self.summarySortBy = SortByLength
+		case SortByLength:
+			self.summarySortBy = SortByID
 		}
 
 		self.gui.Update(self.updateSummaryView)
@@ -138,10 +137,10 @@ func (self *AnalyzerUI) quit(_ *gocui.Gui, _ *gocui.View) error {
 
 func (self *AnalyzerUI) summaryHeader() []string {
 	return []string{
-		self.h(`summary`, string(canfriend.SortByID)),
-		self.h(`summary`, string(canfriend.SortByCount)),
-		self.h(`summary`, string(canfriend.SortByLastSeen)),
-		self.h(`summary`, string(canfriend.SortByLength)),
+		self.h(`summary`, string(SortByID)),
+		self.h(`summary`, string(SortByCount)),
+		self.h(`summary`, string(SortByLastSeen)),
+		self.h(`summary`, string(SortByLength)),
 		`RAW`,
 		`U8`,
 		`U16LE`,
@@ -203,14 +202,14 @@ func (self *AnalyzerUI) updateSummaryView(g *gocui.Gui) error {
 				nop.Sprintf("%d", frameSummary.Count),
 				nop.Sprintf("%v", time.Since(frameSummary.LastSeen).Round(time.Second)),
 				nop.Sprintf("%d", frameSummary.LatestFrame.Length),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayRaw),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayU8),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayU16LE),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayU16BE),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayU32LE),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayU32BE),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayS32),
-				canfriend.PrettifyFrameData(frameSummary, true, canfriend.DisplayASCII),
+				PrettifyFrameData(frameSummary, true, DisplayRaw),
+				PrettifyFrameData(frameSummary, true, DisplayU8),
+				PrettifyFrameData(frameSummary, true, DisplayU16LE),
+				PrettifyFrameData(frameSummary, true, DisplayU16BE),
+				PrettifyFrameData(frameSummary, true, DisplayU32LE),
+				PrettifyFrameData(frameSummary, true, DisplayU32BE),
+				PrettifyFrameData(frameSummary, true, DisplayS32),
+				PrettifyFrameData(frameSummary, true, DisplayASCII),
 			}, "\t")+"\n")
 		}
 
@@ -219,6 +218,4 @@ func (self *AnalyzerUI) updateSummaryView(g *gocui.Gui) error {
 	} else {
 		return err
 	}
-
-	return nil
 }
